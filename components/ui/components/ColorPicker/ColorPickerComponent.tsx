@@ -10,7 +10,7 @@ export const ColorPickerComponent: React.FC = () => {
   const { sixty, thirty, ten } = useColor();
   return (
     <div
-      style={{ backgroundColor: sixty }}
+      style={{ backgroundColor: sixty, boxShadow: "4px 7px 5px rgba(0, 0, 0, 0.25)" }}
       className="flex justify-center items-center w-full h-full rounded-md"
     >
       <div className="scale-[90%]">

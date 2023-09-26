@@ -20,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { LoginPopUp } from "./LoginPopUp";
 
 type Props = {};
 
@@ -27,15 +28,16 @@ export default function Navbar({}: Props) {
   const { sixty, thirty, ten } = useColor();
   const navTextColor = getTextColor(thirty);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const { user, signOut } = useContext(UserContext) ?? {};
-
-  const handleSignOut = signOut
-  ;
+  const { user, handleSignOut } = useContext(UserContext) ?? {};
+  
 
   return (
     <div
-      style={{ backgroundColor: thirty, boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
-      className="sticky top-0 flex flex-row justify-between w-full h-12 px-8 lg:px-20 py-8 shadow-md"
+      style={{
+        backgroundColor: thirty,
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      }}
+      className="sticky top-0 z-50 flex flex-row justify-between w-full h-12 px-8 lg:px-20 py-8 shadow-md"
     >
       <div
         style={{ color: navTextColor }}
@@ -43,7 +45,6 @@ export default function Navbar({}: Props) {
       >
         <NavLink href="/about" label="About" />
         <NavLink href="/contact" label="Contact" />
-
       </div>
 
       <div className="lg:hidden flex flex-col justify-center items-start">
@@ -105,24 +106,30 @@ export default function Navbar({}: Props) {
       </div>
 
       <div className="flex flex-row justify-center items-center text-white">
-      {!user ? (
-        <Button
-          variant="default"
-          className="relative w-[6.5rem] h-[2.5rem] rounded-full bg-slate-100 hover:w-[6.5rem] hover:drop-shadow-md hover:bg-white text-black transition-all ease-out duration-300 group"
-        >
-          <div className="flex flex-row justify-center items-center gap-x-1 group-hover:scale-[108%] transition-transform duration-300">
-            <div className="text-2xl">
-              <FcGoogle />
-            </div>
-            <div className="opacity-100 group-hover:opacity-100 transition-opacity duration-0 group-hover:translate-x-0 group-hover:relative hover:duration-300">
-              <Link href="/auth">Login</Link>
-            </div>
+        {!user ? (
+          // <Button
+          //   variant="default"
+          //   className="relative w-[6.5rem] h-[2.5rem] rounded-full bg-slate-100 hover:w-[6.5rem] hover:drop-shadow-md hover:bg-white text-black transition-all ease-out duration-300 group"
+          // >
+          //   <div className="flex flex-row justify-center items-center gap-x-1 group-hover:scale-[108%] transition-transform duration-300">
+          //     <div className="text-2xl">
+          //       <FcGoogle />
+          //     </div>
+          //     <div className="opacity-100 group-hover:opacity-100 transition-opacity duration-0 group-hover:translate-x-0 group-hover:relative hover:duration-300">
+          //       <Link href="/auth">Login</Link>
+          //     </div>
+          //   </div>
+          // </Button>
+          <div>
+            <LoginPopUp />
           </div>
-        </Button>
-      ) : (
-        <Button onClick={handleSignOut}>Sign Out</Button>
-      )}
-    </div>
+        ) : (
+          <Button onClick={() => {
+            handleSignOut;
+            console.log(user)
+          }}>Sign Out</Button>
+        )}
+      </div>
     </div>
   );
 }

@@ -34,7 +34,7 @@ export const ColorBox: FC<ColorBoxProps> = ({ label, color, textColor }) => {
             borderColor: textColor,
             boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
           }}
-          className="pl-4 pr-4 w-[200px] rounded-md h-6 flex flex-row justify-between items-center font-bold hover:cursor-pointer"
+          className="pl-4 pr-4 w-[174px] lg:w-[200px] rounded-md h-6 flex flex-row justify-between items-center font-bold hover:cursor-pointer transition-all ease-in-out"
         >
           <div>{color}</div>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out cursor-pointer">

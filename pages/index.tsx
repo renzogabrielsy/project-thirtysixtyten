@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ColorPickerComponent } from "@/components/ui/components/ColorPicker/ColorPickerComponent";
 import Hero from "./home/Hero";
-import { Demo } from "./home/Demo";
 import { getTextColor } from "@/lib/getTextColor";
 import { useColor } from "@/contexts/ColorContext";
-import { ColorBox } from "./home/ColorBox";
 import { AiOutlineArrowUp } from "react-icons/ai";
-import { Button } from "@/components/ui/button";
-import { FcGoogle } from "react-icons/fc";
-import Link from "next/link";
-import { UserContext } from "@/contexts/UserContext";
+import ColorSet from "./home/ColorSet";
+import ColorSelection from "./home/ColorSelection";
 
 const Home: React.FC = () => {
-  const { user } = useContext(UserContext) ?? {};
-
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleScroll = () => {
@@ -37,15 +31,9 @@ const Home: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const { sixty, thirty, ten } = useColor();
-
-  const colors = [
-    { label: "sixty", color: sixty },
-    { label: "thirty", color: thirty },
-    { label: "ten", color: ten },
-  ];
-
-  const textColor = getTextColor(thirty);
+  const textColor = getTextColor(sixty);
   const boxShadow = "5px 8px 10px 0px rgba(0, 0, 0, 0.25)";
   const commonClassNames =
     "scale-[83%] lg:scale-100 w-[300px] h-[300px] lg:min-w-[350px] lg:min-h-[350px]";
@@ -55,52 +43,33 @@ const Home: React.FC = () => {
       <div>
         <Hero />
       </div>
-      <div className="flex flex-row justify-center items-center h-[100vh]">
+      <div className="flex flex-col justify-center items-center h-[100vh] gap-y-5">
+        <h1
+          style={{ color: getTextColor(sixty) }}
+          className="text-4xl lg:text-4xl font-bold lg:h-30 lg:justify-end flex justify-center lg:items-center text-center mt-16"
+        >
+          color picker.
+        </h1>
         <div
           id="colorPickerComponent"
-          className="flex flex-col justify-evenly lg:justify-center items-center w-[90%] h-[88vh] lg:h-[85%] mt-16 lg:mt-16 rounded-lg lg:pb-6"
+          className="flex flex-col justify-center lg:justify-center items-center w-[90%] h-[80vh] lg:h-[75%] rounded-lg"
           style={{ backgroundColor: thirty, boxShadow }}
         >
-          <h1
-            style={{ color: textColor }}
-            className="text-[22px] lg:text-4xl font-bold h-16 lg:h-30 lg:justify-end flex justify-center items-end lg:items-center text-center"
-          >
-            color preview.
-          </h1>
-          <div className="flex flex-col justify-evenly items-center h-[88%]">
-            <div className="h-[10%] p-4 w-[95%] lg:w-[50%] flex flex-row justify-center items-center rounded-md lg:mb-4">
-              {!user ? (
-                <Button
-                  style={{ backgroundColor: ten, color: getTextColor(ten) }}
-                  className="w-full gap-x-3 flex flex-row justify-center items-center hover:opacity-90"
-                >
-                  <FcGoogle />
-                  <Link href="/auth">Login to save choices</Link>
-                </Button>
-              ) : (
-                <Button>Save</Button>
-              )}
+          <div className="flex flex-col justify-center items-center h-[100%]">
+            <div
+              style={{
+                backgroundColor: sixty,
+                boxShadow: "4px 7px 5px rgba(0, 0, 0, 0.25)",
+              }}
+              className="h-[45%] lg:h-64 p-4 w-[85%] lg:w-[100%] flex flex-col justify-center items-center rounded-md gap-y-3 mt-6"
+            >
+              <ColorSet />
+              <ColorSelection />
             </div>
-            <div className="flex flex-col lg:w-[95%] lg:px-[8%] justify-center items-center">
-              <div className="lg:h-full lg:w-fit mb-1 lg:mb-2 flex flex-col w-full lg:justify-center items-center gap-y-1 lg:gap-y-2 text-xs">
-                {colors.map((colorObj) => (
-                  <ColorBox
-                    key={colorObj.label}
-                    label={colorObj.label}
-                    color={colorObj.color}
-                    textColor={textColor}
-                  />
-                ))}
-              </div>
 
+            <div className="flex flex-col lg:w-[95%] lg:px-[8%] justify-center items-center">
               <div className="flex flex-col justify-center lg:justify-evenly items-center gap-x-6 lg:flex-row lg:items-start lg:pt-8 w-full h-full">
-                <div
-                  style={{ boxShadow }}
-                  className={`hidden lg:block ${commonClassNames}`}
-                >
-                  <Demo />
-                </div>
-                <div style={{ boxShadow }} className={commonClassNames}>
+                <div style={{}} className={commonClassNames}>
                   <ColorPickerComponent />
                 </div>
               </div>

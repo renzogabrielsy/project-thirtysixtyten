@@ -1,15 +1,20 @@
-// pages/api/signout.ts
-import { NextApiRequest, NextApiResponse } from "next";
-import supabase from '@/lib/supabaseClient';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { type NextRequest, NextResponse } from 'next/server'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+export async function POST(req: NextRequest) {
+  const supabase = createRouteHandlerClient({ cookies })
+
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (session) {
+    await supabase.auth.signOut()
   }
 
-  const { error } = await supabase.auth.signOut();
-
-  if (error) return res.status(500).json({ error: error.message });
-
-  return res.status(200).json({message: 'Successfully signed out.'});
+  return NextResponse.redirect(new URL('/', req.url), {
+    status: 302,
+  })
 }

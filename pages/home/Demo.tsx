@@ -23,7 +23,7 @@ export const Demo = (props: Props) => {
         >
           <CardHeader
             style={{ backgroundColor: thirty, boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)"  }}
-            className="w-full h-14 text-xs lg:text-sm p-4 justify-center rounded-md"
+            className="w-full h-14 text-xs lg:text-sm p-4 justify-center rounded-md items-start"
           >
             <CardTitle style={{ color: getTextColor(thirty) }} className="">
               Demo Layout
@@ -41,7 +41,7 @@ export const Demo = (props: Props) => {
                 style={{ backgroundColor: sixty, color: getTextColor(sixty) }}
                 className="w-[50%]"
               >
-                <p className="">
+                <p className="text-start">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
                   distinctio officia provident numquam qui fugit earum, suscipit
                   tenetur autem expedita enim!
@@ -51,7 +51,7 @@ export const Demo = (props: Props) => {
                 style={{ backgroundColor: thirty, color: getTextColor(thirty), boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)" }}
                 className="w-[50%] p-4 rounded-md"
               >
-                <p>
+                <p className="text-start">
                   Sapiente repudiandae provident, eos nam accusamus qui odit
                   reprehenderit!
                 </p>
