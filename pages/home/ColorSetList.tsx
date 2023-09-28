@@ -17,17 +17,40 @@ import { Input } from "@/components/ui/input";
 import { useFetchColorSets } from "../api/colorSets/fetchColorSet";
 
 type Props = {};
+interface ColorPreference {
+  sixty: string | null;
+  thirty: string | null;
+  ten: string | null;
+}
 
-export default function ColorSet({}: Props) {
+interface ColorSet {
+  id: number;
+  name?: string | null;
+  user_id?: string | null;
+  colorpreferences: ColorPreference[];
+}
+
+interface GroupedColorSets extends Array<ColorSet[]> {}
+
+// Using arrow function and renaming chunkArray to groupColorSets
+const groupColorSets = (
+  arr: ColorSet[],
+  chunkSize: number
+): GroupedColorSets => {
+  const groupedSets: GroupedColorSets = [];
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    groupedSets.push(arr.slice(i, i + chunkSize));
+  }
+  return groupedSets;
+};
+
+export default function ColorSetList({}: Props) {
   const { user } = useContext(UserContext) ?? {};
   const { sixty, thirty, ten, createColorSet } = useColor();
   const colorSets = useFetchColorSets();
-  const colors = [
-    { label: "sixty", color: sixty },
-    { label: "thirty", color: thirty },
-    { label: "ten", color: ten },
-  ];
+  const groupedColorSets: GroupedColorSets = groupColorSets(colorSets, 2);
   const [setName, setSetName] = useState("");
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const textColor = getTextColor(sixty);
 
@@ -51,17 +74,75 @@ export default function ColorSet({}: Props) {
           <Link href="/auth">Login to save choices</Link>
         </Button>
       ) : (
-        <div className="h-full flex flex-col justify-center items-center w-full">
-          <div className="h-[90%] w-full">
-            {colorSets.map((set, index) => (
-              <li key={index}>
-                {set.name ? set.name : "Unnamed Set"}
-                {set.colorpreferences.map((pref, idx) => (
-                  <div key={idx}>
-                    Sixty: {pref.sixty}, Thirty: {pref.thirty}, Ten: {pref.ten}
+        <div className="h-full flex flex-col justify-center items-center w-80">
+          <div className="h-[90%] flex flex-row flex-nowrap items-center overflow-x-hidden gap-x-4 gap-y-2 max-w-[calc(100%/1.2)] mb-3">
+            {groupedColorSets.map((group, groupIndex) => (
+              <div
+                className={`flex flex-row gap-x-4 transition-opacity duration-300 ease-in-out ${
+                  currentSlide !== groupIndex ? "opacity-0" : "opacity-100"
+                }`}
+                key={groupIndex}
+              >
+                {group.map((set, index) => (
+                  <div
+                    key={index}
+                    className="text-xs flex flex-col justify-center items-center font-bold"
+                    style={{ color: textColor }}
+                  >
+                    {set.name ? set.name : "Unnamed Set"}
+                    {set.colorpreferences.map((pref, idx) => (
+                      <div key={idx}>
+                        <div className="w-[100px] h-[20px] border border-black flex flex-row justify-center">
+                          <div
+                            style={{
+                              backgroundColor: pref.sixty ?? "#000000",
+                              color: getTextColor(pref.sixty ?? "#000000"),
+                              boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
+                              border: "1px solid black",
+                            }}
+                            className="text-xs w-[45%] text-center"
+                          >
+                            60
+                          </div>
+                          <div
+                            style={{
+                              backgroundColor: pref.thirty ?? "#000000",
+                              color: getTextColor(pref.thirty ?? "#000000"),
+                              boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
+                              border: "1px solid black",
+                            }}
+                            className="text-xs w-[35%] text-center"
+                          >
+                            30
+                          </div>
+                          <div
+                            style={{
+                              backgroundColor: pref.ten ?? "#000000",
+                              color: getTextColor(pref.ten ?? "#000000"),
+                              boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
+                              border: "1px solid black",
+                            }}
+                            className="text-xs w-[30%] text-center"
+                          >
+                            10
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
-              </li>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-row justify-center items-center">
+            {groupedColorSets.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`h-3 w-3 rounded-full ${
+                  currentSlide === index ? "bg-blue-500" : "bg-gray-300"
+                }`}
+              ></button>
             ))}
           </div>
           <div className="flex flex-row items-center justify-center gap-x-3">

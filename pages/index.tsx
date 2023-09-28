@@ -4,7 +4,7 @@ import Hero from "./home/Hero";
 import { getTextColor } from "@/lib/getTextColor";
 import { useColor } from "@/contexts/ColorContext";
 import { AiOutlineArrowUp } from "react-icons/ai";
-import ColorSet from "./home/ColorSet";
+import ColorSetList from "./home/ColorSetList";
 import ColorSelection from "./home/ColorSelection";
 
 const Home: React.FC = () => {
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
               }}
               className="h-[45%] lg:h-64 p-4 w-[85%] lg:w-[100%] flex flex-col justify-center items-center rounded-md gap-y-3 mt-6"
             >
-              <ColorSet />
+              <ColorSetList />
               <ColorSelection />
             </div>
 

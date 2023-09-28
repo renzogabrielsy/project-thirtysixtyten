@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <>
       <Navbar />
-      <div style={{backgroundColor: sixty}}className="w-full px-0 lg:px-20 transition-all ease-in-out">{children}</div>
+      <div style={{backgroundColor: sixty}}className="">{children}</div>
       <Toaster />
     </>
   );

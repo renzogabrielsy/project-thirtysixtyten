@@ -26,10 +26,9 @@ const isValidPassword = (password: string) => {
 
 export const LoginPopUp = (props: Props) => {
   const { sixty, thirty, ten } = useColor();
-  const { user, handleLogin, handleSignUp } = useContext(UserContext) ?? {};
+  const { handleLogin } = useContext(UserContext) ?? {};
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isLogin, setIsLogin] = useState<boolean>(!!user);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const { toast } = useToast();
@@ -84,9 +83,6 @@ export const LoginPopUp = (props: Props) => {
       return;
     }
   
-    // Login Process
-    let timerId = setTimeout(() => {}, 1000); // Ensuring at least 1 second for the user message
-  
     // User message
     toast({
       variant: "default",
@@ -94,21 +90,17 @@ export const LoginPopUp = (props: Props) => {
       title: "Logging you in...",
     });
   
+    // Login Process
     try {
-      const response = await axios.post("/api/login", { email, password });
-      clearTimeout(timerId); // Clear timer
-  
+      await handleLogin(email, password);  // directly using handleLogin from UserContext
+      
       toast({
         variant: "default",
         duration: 3000,
         title: "Logged in!",
       });
-  
-      handleLogin(email, password);
     } catch (error: any) {
-      clearTimeout(timerId); // Clear timer in case of error
-  
-      const errorMessage = error.response?.data?.error || "An error occurred";
+      const errorMessage = error.message || "An error occurred";
       toast({
         variant: "destructive",
         duration: 3000,
