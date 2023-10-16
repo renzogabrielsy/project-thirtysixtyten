@@ -398,7 +398,11 @@ export const ColorProvider = ({ children }: { children: React.ReactNode }) => {
     };
   
     fetchDataAndUpdateSetName();
-  }, [userID, colorSets, currentSetName, applyColorSet]);
+  }, [userID, colorSets]);
+
+  useEffect(() => {
+    findMatchingSetName(sixty, thirty, ten);
+  }, [sixty, thirty, ten, currentSetName])
 
   const value = {
     sixty,
