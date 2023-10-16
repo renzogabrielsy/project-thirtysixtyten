@@ -10,8 +10,6 @@ import { getTextColor } from "@/lib/getTextColor";
 import { UserContext } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useToast } from "@/components/ui/use-toast";
-import axios from "axios";
 
 type Props = {};
 
@@ -31,7 +29,6 @@ export const LoginPopUp = (props: Props) => {
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,63 +49,22 @@ export const LoginPopUp = (props: Props) => {
   }, [password]);
 
   const handleSubmit = async () => {
-    // Validation & Error Handling
-    let emailIsValid = isValidEmail(email);
-    let passwordIsValid = isValidPassword(password);
-    setEmailError(!emailIsValid);
-    setPasswordError(!passwordIsValid);
-  
-    if (!email && !password) {
-      toast({
-        variant: "destructive",
-        duration: 3000,
-        title: "Missing Fields",
-        description: "Both email and password fields are empty.",
-      });
-      return;
-    }
-  
-    if (!emailIsValid || !passwordIsValid) {
-      toast({
-        variant: "destructive",
-        duration: 3000,
-        title: "Validation Failed",
-        description: "Check email and password fields for errors.",
-      });
-      return;
-    }
-  
-    if (!handleLogin) {
+    if (handleLogin) {
+      const result = await handleLogin(email, password);
+      if (result !== false) {
+        const { success, emailIsValid, passwordIsValid } = result;
+        // Do something with success, emailIsValid, and passwordIsValid
+        // For example, you could set state variables or show a toast message
+      } else {
+        // Handle the case where result is false
+        // For example, you could show a toast message saying login failed
+        console.error("Login failed");
+      }
+    } else {
       console.error("handleLogin is not defined");
-      return;
-    }
-  
-    // User message
-    toast({
-      variant: "default",
-      duration: 10000, // Intentionally high; will be cleared manually
-      title: "Logging you in...",
-    });
-  
-    // Login Process
-    try {
-      await handleLogin(email, password);  // directly using handleLogin from UserContext
-      
-      toast({
-        variant: "default",
-        duration: 3000,
-        title: "Logged in!",
-      });
-    } catch (error: any) {
-      const errorMessage = error.message || "An error occurred";
-      toast({
-        variant: "destructive",
-        duration: 3000,
-        title: "Login Failed",
-        description: errorMessage,
-      });
     }
   };
+  
 
   return (
     <Popover>
@@ -116,6 +72,7 @@ export const LoginPopUp = (props: Props) => {
       <PopoverContent
         style={{
           backgroundColor: sixty,
+          border: `1px solid ${sixty}`,
           color: getTextColor(sixty),
           boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
         }}
@@ -133,8 +90,8 @@ export const LoginPopUp = (props: Props) => {
             }`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`p-2 mb-4 rounded-md w-full ${
-              emailError ? "bg-red-200 border-red-300" : "border-gray-400"
+            className={`p-2 mb-4 rounded-md w-full placeholder:text-[${getTextColor(sixty)}] ${
+              emailError ? "bg-red-200 border-red-300" : "border-gray-700"
             } transition duration-300`}
           />
 
@@ -145,8 +102,8 @@ export const LoginPopUp = (props: Props) => {
             }`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`p-2 mb-4 rounded-md w-full ${
-              passwordError ? "bg-red-200 border-red-300" : "border-gray-400"
+            className={`p-2 mb-4 rounded-md w-full placeholder:text-[${getTextColor(sixty)}] ${
+              passwordError ? "bg-red-200 border-red-300" : "border-gray-700"
             } transition duration-300`}
           />
         </div>
@@ -159,12 +116,11 @@ export const LoginPopUp = (props: Props) => {
           >
             Login
           </Button>
-          <div className="text-xs flex flex-col justify-center items-start ml-3">
+          <div style={{color: getTextColor(sixty)}} className="text-xs flex flex-col justify-center items-start ml-3">
             <p>Not yet registered? </p>
             <Link
               href="/auth"
-              style={{ color: ten }}
-              className="opacity-90 hover:underline"
+              className="opacity-90 hover:underline font-bold"
             >
               Click here to sign up!
             </Link>

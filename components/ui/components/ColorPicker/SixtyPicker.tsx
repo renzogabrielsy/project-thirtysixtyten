@@ -1,13 +1,13 @@
 import React from "react";
-import { ChromePicker } from "react-color";
+import { HexColorPicker } from "react-colorful"
 import { useColor } from "@/contexts/ColorContext";
 
 export const SixtyPicker: React.FC = () => {
   const { setSixty, sixty } = useColor();
 
-  const handleChange = (color: { hex: string }) => {
-    setSixty(color.hex);
+  const handleChange = (color: string) => {
+    setSixty(color);
   };
 
-  return <ChromePicker color={sixty} onChange={handleChange} className=""/>;
+  return <HexColorPicker color={sixty} onChange={handleChange} className=""/>;
 };

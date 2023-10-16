@@ -1,33 +1,21 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { useColor } from "@/contexts/ColorContext";
-import { Button } from "@/components/ui/button";
 import { getTextColor } from "@/lib/getTextColor";
 import { NavLink } from "./NavLink";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { UserContext } from "@/contexts/UserContext";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { LoginPopUp } from "./LoginPopUp";
 import MobileNavbar from "./MobileNavbar";
+import { ProfilePopUp } from "./ProfilePopUp";
 
 type Props = {};
 
 export default function Navbar({}: Props) {
-  const { sixty, thirty, ten } = useColor();
+  const { thirty } = useColor();
   const navTextColor = getTextColor(thirty);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const { user, handleSignOut } = useContext(UserContext) ?? {};
+  const { user} = useContext(UserContext) ?? {};
 
   return (
     <div
@@ -60,7 +48,9 @@ export default function Navbar({}: Props) {
             <LoginPopUp />
           </div>
         ) : (
-          <Button onClick={handleSignOut}>Sign Out</Button>
+          <div>
+            <ProfilePopUp />
+          </div>
         )}
       </div>
     </div>

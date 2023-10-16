@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { useColor } from '@/contexts/ColorContext';
-import { NavLink } from './NavLink';
+import React, { useState } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useColor } from "@/contexts/ColorContext";
+import { NavLink } from "./NavLink";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { getTextColor } from '@/lib/getTextColor';
+} from "@/components/ui/sheet";
+import { getTextColor } from "@/lib/getTextColor";
 
 type Props = {};
 

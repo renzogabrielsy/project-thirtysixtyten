@@ -15,7 +15,7 @@ export default function ColorSelection({}: Props) {
 
   const textColor = getTextColor(sixty);
   return (
-        <div className="lg:w-fit mb-1 lg:mb-2 flex flex-col w-full lg:justify-center items-center gap-y-1 lg:gap-y-2 text-xs">
+        <div className="h-64 justify-center lg:w-fit mb-1 lg:mb-2 flex flex-col w-full lg:justify-center items-center gap-y-1 lg:gap-y-2 text-xs">
           {colors.map((colorObj) => (
             <ColorBox
               key={colorObj.label}

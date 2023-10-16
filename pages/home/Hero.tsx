@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useColor } from "@/contexts/ColorContext";
 import { getTextColor } from "@/lib/getTextColor";
 import { Demo } from "./Demo";
+import { Button } from "@/components/ui/button";
 
 const Hero: React.FC = () => {
   const { sixty, thirty, ten } = useColor();
@@ -10,7 +11,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
       setFadeIn(true);
-    }, 50); // 50ms delay for better reliability
+    }, 150); // 50ms delay for better reliability
   }, []);
 
   const scrollToBottom = () => {
@@ -46,7 +47,7 @@ const Hero: React.FC = () => {
         >
           The 60-30-10 rule visualized.
         </p>
-        <button
+        <Button
           onClick={scrollToBottom}
           style={{ backgroundColor: ten, color: getTextColor(ten) }}
           className={`py-2 px-4 rounded-full text-lg font-semibold ${
@@ -56,7 +57,7 @@ const Hero: React.FC = () => {
           }`}
         >
           Get started.
-        </button>
+        </Button>
       </div>
       <div className="flex flex-col gap-y-5">
         <div
