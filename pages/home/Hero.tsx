@@ -3,6 +3,7 @@ import { useColor } from "@/contexts/ColorContext";
 import { getTextColor } from "@/lib/getTextColor";
 import { Demo } from "./Demo";
 import { Button } from "@/components/ui/button";
+import ExampleBar from "./ExampleBar";
 
 const Hero: React.FC = () => {
   const { sixty, thirty, ten } = useColor();
@@ -59,7 +60,7 @@ const Hero: React.FC = () => {
           Get started.
         </Button>
       </div>
-      <div className="flex flex-col gap-y-5">
+      <div className="flex flex-col justify-center items-center gap-y-10">
         <div
           style={{ boxShadow: "2px 8px 20px 5px rgba(0, 0, 0, 0.25)" }}
           className={`flex scale-[83%] lg:scale-100 w-[300px] h-[300px] lg:min-w-[350px] lg:min-h-[350px] rounded-md ${
@@ -70,7 +71,15 @@ const Hero: React.FC = () => {
         >
           <Demo />
         </div>
-        <div>example bar</div>
+        <div
+          className={`max-w-[350px] ${
+            fadeIn
+              ? "opacity-100 transition-opacity duration-1000 delay-1000"
+              : "opacity-0"
+          } `}
+        >
+          <ExampleBar />
+        </div>
       </div>
     </div>
   );

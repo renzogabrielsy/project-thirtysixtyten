@@ -30,7 +30,6 @@ export default function Navbar({}: Props) {
         className="hidden lg:flex flex-row items-center justify-center gap-x-6"
       >
         <NavLink href="/about" label="About" />
-        <NavLink href="/contact" label="Contact" />
       </div>
 
       <MobileNavbar />

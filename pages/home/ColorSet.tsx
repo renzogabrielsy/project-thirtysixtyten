@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { getTextColor } from "@/lib/getTextColor";
 import { useColor } from "@/contexts/ColorContext";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useFetchColorSets, fetchColorSets } from "../api/colorSets/fetchColorSet";
 
 type Props = {};
 interface ColorPreference {
@@ -30,21 +29,34 @@ interface ColorSet {
 }
 
 export default function ColorSet({}: Props) {
-  
   const { user } = useContext(UserContext) ?? {};
-  const {
-    sixty,
-    thirty,
-    ten,
-    createColorSet,
-    updateLoggedColors,
-  } = useColor();
+  const { sixty, thirty, ten, createColorSet, updateLoggedColors } = useColor();
   const [setName, setSetName] = useState("");
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   const handleAddColorSet = async () => {
-    setOpen(false);
+    if (!setName || setName.trim() === "") {
+      toast({
+        variant: "destructive",
+        title: "Invalid Set Name",
+        description: "Set name cannot be empty.",
+        duration: 2000,
+      });
+      return;
+    }
+
+    const regex = /^[a-zA-Z0-9-_ ]+$/;
+    if (!regex.test(setName)) {
+      toast({
+        variant: "destructive",
+        title: "Invalid Set Name",
+        description: "Set name contains invalid characters.",
+        duration: 2000,
+      });
+      return;
+    }
+    
     toast({
       variant: "default",
       title: "Creating set...",
@@ -52,15 +64,12 @@ export default function ColorSet({}: Props) {
 
     const userId = user?.id;
     await createColorSet(userId as string, setName);
-
-    // Show "Set created!" toast
+    setOpen(false);
     toast({
       variant: "default",
       title: "Set created!",
       duration: 2000,
     });
-
-    // Close the dialog
   };
 
   return (
@@ -91,7 +100,7 @@ export default function ColorSet({}: Props) {
                   <div className="flex flex-col justify-start items-center mt-4 gap-y-5">
                     <Input
                       id="setName"
-                      defaultValue="Name your color set."
+                      placeholder={setName}
                       onChange={(e) => setSetName(e.target.value)}
                       className="w-[60%] p-4 mt-2"
                     />
@@ -130,8 +139,7 @@ export default function ColorSet({}: Props) {
                     <div className="flex flex-row justify-center items-center gap-x-4">
                       <Button
                         onClick={() => {
-                          handleAddColorSet()
-                          
+                          handleAddColorSet();
                         }}
                         style={{
                           backgroundColor: ten,
@@ -146,6 +154,7 @@ export default function ColorSet({}: Props) {
                         style={{
                           boxShadow: "2px 4px 5px 0px rgba(0, 0, 0, 0.25)",
                         }}
+                        onClick={() => setOpen(false)}
                       >
                         Go back
                       </Button>

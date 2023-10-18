@@ -57,7 +57,6 @@ export default function ColorSetList({}: Props) {
     sixty,
     handleDelete,
     applyColorSet,
-    updateLoggedColors,
     fetchColorSets,
     currentSetName,
     editColorSet,
@@ -79,14 +78,7 @@ export default function ColorSetList({}: Props) {
     });
   };
 
-  const handleEditColorSet = async (set: any) => {
-    // Update the color set name in the database
-    // Refresh the list
-    setEditingId(0); // Reset the editingId
-  };
-
   const submitEditColorSet = async (setId: number, setName: string) => {
-    // Assuming you've imported editColorSet from your ColorContext
     await editColorSet(
       tempSetName || setName,
       tempSixty as string,
@@ -102,16 +94,12 @@ export default function ColorSetList({}: Props) {
       duration: 2000,
     });
 
-    fetchColorSets(user?.id as string); // Refresh the list
-    setEditingId(0); // Reset the editingId
+    fetchColorSets(user?.id as string);
+    setEditingId(0);
   };
 
-  //   useEffect(() => {
-  //     console.log("Updated userColorSetList:", userColorSetList);
-  //   }, [userColorSetList]);
 
   useEffect(() => {
-    // Fetch latest color sets when dialog opens
     fetchColorSets(user?.id as string);
   }, []);
 

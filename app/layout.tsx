@@ -15,7 +15,7 @@ export default function RootLayout({
     <>
       <Navbar />
       <CheckForUsername />
-      <div style={{backgroundColor: sixty}}className="">{children}</div>
+      <div style={{backgroundColor: sixty}}>{children}</div>
       <Toaster />
     </>
   );

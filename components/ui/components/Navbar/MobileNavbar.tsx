@@ -53,12 +53,6 @@ const MobileNavbar: React.FC<Props> = ({}) => {
               >
                 <NavLink href="/about" label="About" />
               </div>
-              <div
-                onClick={() => setSheetOpen(false)}
-                className="hover:underline"
-              >
-                <NavLink href="/contact" label="Contact" />
-              </div>
             </SheetDescription>
           </SheetHeader>
         </SheetContent>

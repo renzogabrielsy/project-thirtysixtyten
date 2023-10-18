@@ -21,12 +21,14 @@ interface UserContextProps {
   hasUsername: boolean | null;
   checkForUsername: () => Promise<boolean>;
   updateUsername: (newUsername: string) => Promise<void>;
+  updateEmail: (newEmail: string) => Promise<void>
   fetchUserProfile: (
     userId: string
   ) => Promise<Record<string, any> | undefined>;
   updateUserProfileState: () => Promise<void>;
   userProfile: Record<string, any> | null;
   updateProfilePic: (userId: string) => Promise<void>;
+  editProfilePic: (randomSeed: string) => Promise<void>;
 }
 
 interface UserProviderProps {
@@ -169,7 +171,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       await checkForUsername();
       await fetchUserProfile(userId);
-      await updateProfilePic(userId);
 
       toast({
         variant: "default",
@@ -180,12 +181,68 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
+  const updateEmail = async (newEmail: string) => {
+    // Validate the email format
+    if (!isValidEmail(newEmail)) {
+      toast({
+        variant: "destructive",
+        duration: 3000,
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+      });
+      return;
+    }
+  
+    // Update the email using Supabase Auth API
+    const { error } = await supabase.auth.updateUser({ email: newEmail });
+  
+    if (error) {
+      console.error("Error updating email:", error);
+      toast({
+        variant: "destructive",
+        duration: 3000,
+        title: "Email Update Failed",
+        description: "Please try again or contact the developer.",
+      });
+    } else {
+      toast({
+        variant: "default",
+        duration: 3000,
+        title: "Email Updated",
+        description: `Your email has been updated to ${newEmail}.`,
+      });
+      // Optionally, you can refresh the session here if it doesn't cause a re-login
+    }
+  };
+  
+  
+  
+
   const updateProfilePic = async (userId: string) => {
     const avatarUrl = `https://api.dicebear.com/7.x/micah/svg?seed=${userId}`;
+    user
 
     const { error } = await supabase
       .from("user_profiles")
       .upsert([{ user_id: userId, avatar: avatarUrl }], {
+        onConflict: "user_id",
+      });
+
+    if (error) {
+      console.error("Error setting display picture", error);
+    } else {
+      console.log("Display picture set.");
+      checkForUsername();
+    }
+  };
+
+  const editProfilePic = async (randomSeed: string) => {
+    const avatarUrl = `https://api.dicebear.com/7.x/micah/svg?seed=${randomSeed}`;
+    user
+
+    const { error } = await supabase
+      .from("user_profiles")
+      .upsert([{ user_id: user?.id as string, avatar: avatarUrl }], {
         onConflict: "user_id",
       });
 
@@ -330,10 +387,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         hasUsername,
         checkForUsername,
         updateUsername,
+        updateEmail,
         fetchUserProfile,
         updateUserProfileState,
         userProfile,
         updateProfilePic,
+        editProfilePic
       }}
     >
       {children}

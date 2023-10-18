@@ -15,13 +15,16 @@ import { getTextColor } from "@/lib/getTextColor";
 type Props = {};
 
 export const CheckForUsername = (props: Props) => {
-  const { hasUsername, updateUsername } = useContext(UserContext) ?? {};
+  const { hasUsername, updateUsername, updateProfilePic, user } = useContext(UserContext) ?? {};
   const [newUsername, setNewUsername] = useState("");
   const { ten } = useColor();
 
   const handleSubmit = async () => {
     if (updateUsername) {
       await updateUsername(newUsername);
+    }
+    if (updateProfilePic && user?.id) {
+      await updateProfilePic(user?.id);
     }
   };
 
@@ -31,7 +34,7 @@ export const CheckForUsername = (props: Props) => {
         <DialogContent>
           <DialogTitle>Set Your Username</DialogTitle>
           <DialogDescription className="flex flex-col justify-center items-start gap-y-4">
-            Don't worry. This is just a one-time thing.
+            {"Don't worry. This is just a one-time thing."}
             <Label>New Username</Label>
             <Input
               value={newUsername}

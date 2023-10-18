@@ -11,12 +11,14 @@ import { useColor } from "@/contexts/ColorContext";
 import { getTextColor } from "@/lib/getTextColor";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { DisplayPicture } from "../Profile/DisplayPicture";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 export const ProfilePopUp = (props: Props) => {
   const { user, handleSignOut, userProfile } = useContext(UserContext) ?? {};
   const { sixty, thirty, ten, currentSetName } = useColor();
+  const router = useRouter();
 
   return (
     <Popover>
@@ -49,7 +51,9 @@ export const ProfilePopUp = (props: Props) => {
             }}
             className="w-full"
             variant={"default"}
-            onClick={handleSignOut}
+            onClick={() => {
+              router.push("/editProfile");
+            }}
           >
             Edit Profile
           </Button>

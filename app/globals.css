@@ -49,3 +49,15 @@
     --ring: 224.3 76.3% 48%;
   }
 }
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  min-width: 100%;
+}
