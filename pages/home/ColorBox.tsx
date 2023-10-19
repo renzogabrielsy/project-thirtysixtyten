@@ -66,3 +66,5 @@ export const ColorBox: FC<ColorBoxProps> = ({ label, color, textColor }) => {
     </div>
   );
 };
+
+export default ColorBox;

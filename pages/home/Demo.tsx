@@ -75,3 +75,5 @@ export const Demo = (props: Props) => {
     </>
   );
 };
+
+export default Demo;
